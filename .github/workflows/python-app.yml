@@ -1,0 +1,35 @@
+name: Python application
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'  # Replace with your Python version
+
+    - name: Install dependencies
+      run: |
+        make install
+
+    - name: Run the app
+      run: |
+        make run &
+        sleep 15  # Adjust sleep time if necessary
+
+    - name: Test the app
+      run: |
+        curl --fail http://localhost:3000 || exit 1
+
